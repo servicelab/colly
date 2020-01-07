@@ -17,7 +17,6 @@ package colly
 
 import (
 	"bytes"
-	"context"
 	"crypto/rand"
 	"encoding/json"
 	"errors"
@@ -45,7 +44,6 @@ import (
 	"github.com/gocolly/colly/v2/storage"
 	"github.com/kennygrant/sanitize"
 	"github.com/temoto/robotstxt"
-	"google.golang.org/appengine/urlfetch"
 )
 
 // A CollectorOption sets an option on a Collector.
@@ -382,26 +380,6 @@ func (c *Collector) Init() {
 	c.robotsMap = make(map[string]*robotstxt.RobotsData)
 	c.IgnoreRobotsTxt = true
 	c.ID = atomic.AddUint32(&collectorCounter, 1)
-}
-
-// Appengine will replace the Collector's backend http.Client
-// With an Http.Client that is provided by appengine/urlfetch
-// This function should be used when the scraper is run on
-// Google App Engine. Example:
-//   func startScraper(w http.ResponseWriter, r *http.Request) {
-//     ctx := appengine.NewContext(r)
-//     c := colly.NewCollector()
-//     c.Appengine(ctx)
-//      ...
-//     c.Visit("https://google.ca")
-//   }
-func (c *Collector) Appengine(ctx context.Context) {
-	client := urlfetch.Client(ctx)
-	client.Jar = c.backend.Client.Jar
-	client.CheckRedirect = c.backend.Client.CheckRedirect
-	client.Timeout = c.backend.Client.Timeout
-
-	c.backend.Client = client
 }
 
 // Visit starts Collector's collecting job by creating a

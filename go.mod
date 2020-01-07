@@ -13,5 +13,5 @@ require (
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca
 	github.com/temoto/robotstxt v1.1.1
 	golang.org/x/net v0.0.0-20190724013045-ca1201d0de80
-	google.golang.org/appengine v1.6.1
+	golang.org/x/text v0.3.2 // indirect
 )
